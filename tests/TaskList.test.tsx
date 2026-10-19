@@ -62,6 +62,78 @@ describe("TaskList", () => {
   });
 });
 
+describe("filtros e resumo", () => {
+  it("mostra o total, as pendentes e as concluídas", () => {
+    render(<App />);
+
+    expect(screen.getByText("Total: 3")).toBeInTheDocument();
+    expect(screen.getByText("Pendentes: 2")).toBeInTheDocument();
+    expect(screen.getByText("Concluídas: 1")).toBeInTheDocument();
+  });
+
+  it("filtra as pendentes e destaca o filtro ativo", async () => {
+    const user = userEvent.setup();
+
+    render(<App />);
+
+    await user.click(screen.getByRole("button", { name: "Pendentes" }));
+
+    expect(screen.getByRole("button", { name: "Pendentes" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "Pendentes" })).toHaveClass("task-filters__button--active");
+    expect(screen.getByRole("button", { name: "Todas" })).toHaveAttribute("aria-pressed", "false");
+    expect(screen.getByText("Explorar o código do TaskFlow")).toBeInTheDocument();
+    expect(screen.getByText("Adicionar uma tarefa nova")).toBeInTheDocument();
+    expect(screen.queryByText("Marcar uma tarefa como concluída")).not.toBeInTheDocument();
+    expect(screen.getByText("Total: 3")).toBeInTheDocument();
+    expect(screen.getByText("Pendentes: 2")).toBeInTheDocument();
+    expect(screen.getByText("Concluídas: 1")).toBeInTheDocument();
+  });
+
+  it("filtra as concluídas e volta a mostrar todas", async () => {
+    const user = userEvent.setup();
+
+    render(<App />);
+
+    await user.click(screen.getByRole("button", { name: "Concluídas" }));
+
+    expect(screen.getByRole("button", { name: "Concluídas" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByText("Marcar uma tarefa como concluída")).toBeInTheDocument();
+    expect(screen.queryByText("Explorar o código do TaskFlow")).not.toBeInTheDocument();
+    expect(screen.queryByText("Adicionar uma tarefa nova")).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Todas" }));
+
+    expect(screen.getByRole("button", { name: "Todas" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByText("Explorar o código do TaskFlow")).toBeInTheDocument();
+    expect(screen.getByText("Adicionar uma tarefa nova")).toBeInTheDocument();
+    expect(screen.getByText("Marcar uma tarefa como concluída")).toBeInTheDocument();
+  });
+
+  it("atualiza os contadores ao criar, concluir e excluir", async () => {
+    const user = userEvent.setup();
+
+    render(<App />);
+
+    await user.type(screen.getByLabelText("Nova tarefa"), "Revisar filtros");
+    await user.click(screen.getByRole("button", { name: "Adicionar" }));
+
+    expect(screen.getByText("Total: 4")).toBeInTheDocument();
+    expect(screen.getByText("Pendentes: 3")).toBeInTheDocument();
+    expect(screen.getByText("Concluídas: 1")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("checkbox", { name: "Revisar filtros" }));
+
+    expect(screen.getByText("Pendentes: 2")).toBeInTheDocument();
+    expect(screen.getByText("Concluídas: 2")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Excluir tarefa Revisar filtros" }));
+
+    expect(screen.getByText("Total: 3")).toBeInTheDocument();
+    expect(screen.getByText("Pendentes: 2")).toBeInTheDocument();
+    expect(screen.getByText("Concluídas: 1")).toBeInTheDocument();
+  });
+});
+
 describe("persistência", () => {
   it("mostra as tarefas iniciais e as recupera depois de criar, concluir e excluir", async () => {
     const user = userEvent.setup();
