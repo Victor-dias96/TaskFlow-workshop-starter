@@ -1,0 +1,59 @@
+---
+description: Padrões de desenvolvimento e validação do TaskFlow
+alwaysApply: true
+---
+
+# TaskFlow
+
+## Antes de modificar arquivos
+
+- Leia os arquivos relacionados à solicitação.
+- Explique brevemente como a funcionalidade atual funciona.
+- Apresente um plano curto antes de modificar qualquer arquivo.
+- Informe quais arquivos pretende modificar.
+- Aguarde aprovação quando a tarefa envolver vários arquivos.
+
+## Tecnologia e arquitetura
+
+- Utilize React e TypeScript.
+- Preserve a estrutura atual do projeto.
+- Reutilize tipos, hooks e componentes existentes quando possível.
+- Mantenha componentes com responsabilidade única.
+- Faça alterações pequenas, fáceis de revisar e testar.
+
+## Restrições
+
+- Não adicione dependências sem explicar a necessidade.
+- Não altere o formato persistido das tarefas sem justificar.
+- Não remova funcionalidades existentes.
+- Não reestruture o projeto inteiro para implementar uma funcionalidade pequena.
+- Não modifique arquivos fora do escopo sem informar o motivo.
+- Não inclua credenciais, tokens ou dados sensíveis.
+
+## Interface e acessibilidade
+
+- Utilize HTML semântico.
+- Associe labels aos campos de formulário.
+- Preserve a navegação por teclado.
+- Utilize atributos acessíveis quando necessário.
+- Não utilize apenas cor para comunicar estados.
+- Mensagens de erro devem ser perceptíveis para tecnologias assistivas.
+
+## Validação
+
+- Execute os testes relacionados antes de concluir.
+- Execute o build antes de considerar a tarefa finalizada.
+- Verifique manualmente o fluxo alterado.
+- Não afirme que executou comandos que não foram executados.
+- Informe claramente qualquer validação que não tenha sido realizada.
+
+## Resposta final
+
+Ao concluir:
+
+1. Resuma a implementação realizada.
+2. Liste os arquivos modificados.
+3. Informe os comandos executados.
+4. Apresente os resultados obtidos.
+5. Informe limitações encontradas.
+6. Sugira um commit no padrão Conventional Commits.
